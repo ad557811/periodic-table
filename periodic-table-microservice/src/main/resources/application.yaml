@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: periodic-table-microservice
+  jpa:
+    open-in-view: false

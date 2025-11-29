@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    restart: on-failure:1
+    env_file: .env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_DB_PASSWORD}"
+
+  backend:
+    env_file: .env
+    restart: on-failure:1
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/periodic-table
+      POSTGRES_PASSWORD: "${POSTGRES_PT_PASSWORD}"
+    depends_on:
+      - postgres
+    build:
+      context: ./periodic-table-microservice
+
+  frontend:
+    restart: on-failure:1
+    build:
+      context: ./periodic-table-app
+
+volumes:
+  postgres-data:
