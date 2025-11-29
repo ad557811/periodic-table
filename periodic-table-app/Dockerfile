@@ -2,8 +2,7 @@ FROM node:22 AS build-env
 COPY . /app
 WORKDIR /app
 
-RUN npm install
-RUN npm run build --configuration=production
+RUN npm ci && npm run build --configuration=production
 
 FROM gcr.io/distroless/nodejs24-debian12:nonroot
 COPY --from=build-env /app/dist           /app/dist

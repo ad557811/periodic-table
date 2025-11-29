@@ -12,7 +12,7 @@ public class PeriodicTableElementService {
   private PeriodicTableElementRepository repository;
 
   public List<Element> getElements(String query, int pageSize, int pageIndex) {
-
+    return List.of();
   }
 
 }

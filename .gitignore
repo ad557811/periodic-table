@@ -1,2 +1,7 @@
 /.metadata/
 .env
+**/.idea
+**/mvnw
+**/mvnw.cmd
+**/target
+**/*.log
