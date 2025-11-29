@@ -14,8 +14,8 @@ services:
     env_file: .env
     restart: on-failure:1
     environment:
-      POSTGRES_URL: jdbc:postgresql://postgres:5432/periodic-table
-      POSTGRES_PASSWORD: "${POSTGRES_PT_PASSWORD}"
+      POSTGRES_HOST: postgres
+      PT_PASSWORD: "${PT_PASSWORD}"
     depends_on:
       - postgres
     build:

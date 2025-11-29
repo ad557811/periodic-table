@@ -1,27 +1,28 @@
-package com.poc.periodictable.controller;
+package com.periodictable.controller;
 
-import com.poc.periodictable.model.Element;
-import com.poc.periodictable.service.PeriodicTableElementService;
-import lombok.RequiredArgsConstructor;
+import com.periodictable.entity.Element;
+import com.periodictable.service.PeriodicTableElementService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/element")
-@RequiredArgsConstructor
 public class PeriodicTableElementController {
 
   private final PeriodicTableElementService service;
 
+  public PeriodicTableElementController(PeriodicTableElementService service) {
+    this.service = service;
+  }
+
   @GetMapping
-  public List<Element> getElements(@RequestParam(name = "name", required = false) String query,
+  public Flux<Element> getElements(@RequestParam(name = "name", required = false) String query,
                                    @RequestParam(name = "size", required = false, defaultValue = "10") int pageSize,
                                    @RequestParam(name = "index", required = false, defaultValue = "0") int pageIndex) {
-    return service.getElements(query, pageSize, pageIndex);
+    return service.getElements(query);
   }
 
 }

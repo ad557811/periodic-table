@@ -1,13 +1,13 @@
-package com.poc.periodictable;
+package com.periodictable.importhelper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PeriodicTableMicroserviceApplication {
+public class PeriodicTableImportHelperApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PeriodicTableMicroserviceApplication.class, args);
+		SpringApplication.run(PeriodicTableImportHelperApplication.class, args);
 	}
 
 }

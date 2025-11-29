@@ -1,5 +1,7 @@
 spring:
   application:
     name: periodic-table-microservice
-  jpa:
-    open-in-view: false
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRES_HOST:localhost}:5432/periodic-table
+    username: periodic-table
+    password: ${PT_PASSWORD}

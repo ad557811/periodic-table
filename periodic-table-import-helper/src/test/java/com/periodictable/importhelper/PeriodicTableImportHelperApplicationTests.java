@@ -1,10 +1,10 @@
-package com.poc.periodictable;
+package com.periodictable.importhelper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PeriodicTableMicroserviceApplicationTests {
+class PeriodicTableImportHelperApplicationTests {
 
 	@Test
 	void contextLoads() {
