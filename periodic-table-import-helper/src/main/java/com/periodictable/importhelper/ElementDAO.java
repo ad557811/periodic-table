@@ -1,5 +1,7 @@
 package com.periodictable.importhelper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -11,12 +13,15 @@ import java.util.List;
 @Component
 public class ElementDAO {
 
+  private static final Logger log = LoggerFactory.getLogger(ElementDAO.class);
+
   private final String postgresConnectionString = "jdbc:postgresql://localhost:5432/periodic-table";
   private final String postgresUser = "periodic-table";
   private final String postgresPassword;
 
-  private final String query = "INSERT INTO ELEMENT(NUMBER,NAME,APPEARANCE,CATEGORY,DENSITY,DISCOVERED_BY,NAMED_BY,SYMBOL) " +
-      "VALUES(?,?,?,?,?,?,?,?)";
+  private final String insertQuery = "INSERT INTO ELEMENT(NUMBER,NAME,APPEARANCE,CATEGORY,DENSITY,DISCOVERED_BY,NAMED_BY,SYMBOL,SUMMARY) " +
+      "VALUES(?,?,?,?,?,?,?,?,?)";
+  private final String clearTableQuery = "TRUNCATE ELEMENT RESTART IDENTITY";
 
   public ElementDAO() {
     postgresPassword = System.getenv("PT_PASSWORD");
@@ -26,8 +31,13 @@ public class ElementDAO {
     Class.forName("org.postgresql.Driver");
     try (Connection connection = DriverManager.getConnection(postgresConnectionString, postgresUser, postgresPassword)) {
       connection.setAutoCommit(false);
+      try (PreparedStatement clearTable = connection.prepareStatement(clearTableQuery)) {
+        clearTable.executeUpdate();
+      }
+
       for (Element element : valuesToInsert) {
-        try (PreparedStatement update = connection.prepareStatement(query)) {
+        try (PreparedStatement update = connection.prepareStatement(insertQuery)) {
+          log.info("Inserting {}", element);
           update.setInt(1, element.number());
           update.setString(2, element.name());
           update.setString(3, element.appearance());
@@ -36,6 +46,7 @@ public class ElementDAO {
           update.setString(6, element.discoveredBy());
           update.setString(7, element.namedBy());
           update.setString(8, element.symbol());
+          update.setString(9, element.summary());
           update.execute();
         }
       }

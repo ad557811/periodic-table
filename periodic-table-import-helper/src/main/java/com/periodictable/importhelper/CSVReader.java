@@ -31,7 +31,8 @@ public class CSVReader {
           Double.parseDouble(StringUtils.defaultIfBlank(next.get("density"), "0.0")),
           next.get("discovered_by"),
           next.get("named_by"),
-          next.get("symbol")
+          next.get("symbol"),
+          next.get("summary")
       ));
       next = reader.readMap();
     }

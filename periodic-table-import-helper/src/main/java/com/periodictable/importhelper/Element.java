@@ -8,6 +8,7 @@ public record Element(
     Double density,
     String discoveredBy,
     String namedBy,
-    String symbol
+    String symbol,
+    String summary
 ) {
 }
