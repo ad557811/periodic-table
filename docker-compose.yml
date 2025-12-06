@@ -13,6 +13,8 @@ services:
   backend:
     env_file: .env
     restart: on-failure:1
+    ports:
+      - "8080:8080"
     environment:
       POSTGRES_HOST: postgres
       PT_PASSWORD: "${PT_PASSWORD}"
@@ -23,6 +25,8 @@ services:
 
   frontend:
     restart: on-failure:1
+    ports:
+     - "4200:4200"
     build:
       context: ./periodic-table-app
 
