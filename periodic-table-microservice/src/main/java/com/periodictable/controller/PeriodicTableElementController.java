@@ -19,10 +19,10 @@ public class PeriodicTableElementController {
   }
 
   @GetMapping
-  public Flux<Element> getElements(@RequestParam(name = "name", required = false) String query,
-                                   @RequestParam(name = "size", required = false, defaultValue = "10") int pageSize,
-                                   @RequestParam(name = "index", required = false, defaultValue = "0") int pageIndex) {
-    return service.getElements(query);
+  public Flux<Element> getElements(@RequestParam(name = "query", required = false) String query,
+                                   @RequestParam(name = "max", required = false, defaultValue = "10") int pageSize,
+                                   @RequestParam(name = "page", required = false, defaultValue = "0") int pageIndex) {
+    return service.getElements(query, pageIndex, pageSize);
   }
 
 }
