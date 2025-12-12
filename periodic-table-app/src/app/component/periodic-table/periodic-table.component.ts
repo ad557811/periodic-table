@@ -1,11 +1,8 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {AngularModule} from '../../model/angular.module';
-import {HttpClient} from '@angular/common/http';
 import {HttpService} from '../../service/http.service';
 import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {map, startWith, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-periodic-table',
@@ -15,6 +12,8 @@ import {catchError, map, startWith, switchMap} from 'rxjs/operators';
 })
 export class PeriodicTableComponent implements AfterViewInit {
 
+  loading = true;
+  maxElements = Infinity;
   columnNames = ["number", "name", "appearance", "category", "density", "discoveredBy", "namedBy", "symbol", "summary"];
 
   columns;
@@ -22,7 +21,7 @@ export class PeriodicTableComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private httpClient: HttpService) {
+  constructor(private readonly httpClient: HttpService) {
     this.columns = this.columnNames.map(columnName => {
       return {
         columnDef: columnName,
@@ -32,8 +31,16 @@ export class PeriodicTableComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.paginator.page.subscribe((pageChange) => {
-      this.httpClient.getElements(pageChange.pageSize, pageChange.pageIndex)
-    });
+    this.paginator.page.pipe(
+      startWith([]),
+      switchMap(() => {
+        this.loading = true;
+        return this.httpClient.getElements(this.paginator.pageSize, this.paginator.pageIndex)
+      }),
+      map(result => {
+        this.loading = false;
+        return result;
+      })
+    ).subscribe(result => this.dataSource = result);
   }
 }
