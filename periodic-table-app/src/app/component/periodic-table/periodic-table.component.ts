@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {AngularModule} from '../../model/angular.module';
+import {AngularModule} from '../../angular.module';
 import {HttpService} from '../../service/http.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {switchMap} from 'rxjs';
@@ -13,7 +13,6 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 export class PeriodicTableComponent implements AfterViewInit {
 
-  loading = true;
   pageSize = 10;
   maxElements = Infinity; // enable infinite pagination
   columnNames = ["number", "name", "appearance", "category", "density", "discoveredBy", "namedBy", "symbol", "summary"];
@@ -32,30 +31,26 @@ export class PeriodicTableComponent implements AfterViewInit {
     })
   }
 
-  ngAfterViewInit(): void {
-    this.callService(this.pageSize, 0)
+  applyFilter($event: KeyboardEvent) {
+    const filterValue = ($event.target as HTMLInputElement).value;
+    this.paginator.firstPage();
+    this.callService(filterValue)
       .subscribe(result => this.dataSource.data = result);
-
-    this.paginator.page.pipe(
-      switchMap(() => {
-        this.loading = true;
-        return this.callService(this.paginator.pageSize, this.paginator.pageIndex)
-      })
-    ).subscribe({
-      next: (result: any) => {
-        this.dataSource.data = result;
-      },
-      error: (err: any) => {
-        console.log(err);
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
   }
 
-  public callService(pageSize: number, pageIndex: number) {
-    return this.httpClient.getElements(pageSize, pageIndex);
+  ngAfterViewInit(): void {
+    // fill table at startup
+    this.callService()
+      .subscribe(result => this.dataSource.data = result);
+
+    // refresh at every page change
+    this.paginator.page.pipe(
+      switchMap(() => this.callService())
+    ).subscribe(result => this.dataSource.data = result);
+  }
+
+  public callService(queryString = '') {
+    return this.httpClient.getElements(queryString, this.paginator.pageSize, this.paginator.pageIndex);
   }
 
 }
