@@ -1,4 +1,4 @@
-export interface Element {
+export interface PeriodicTableElement {
   number: number,
   name: string,
   appearance: string

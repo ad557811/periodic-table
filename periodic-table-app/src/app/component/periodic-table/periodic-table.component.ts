@@ -2,7 +2,8 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {AngularModule} from '../../model/angular.module';
 import {HttpService} from '../../service/http.service';
 import {MatPaginator} from '@angular/material/paginator';
-import {map, startWith, switchMap} from 'rxjs';
+import {switchMap} from 'rxjs';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-periodic-table',
@@ -13,11 +14,12 @@ import {map, startWith, switchMap} from 'rxjs';
 export class PeriodicTableComponent implements AfterViewInit {
 
   loading = true;
-  maxElements = Infinity;
+  pageSize = 10;
+  maxElements = Infinity; // enable infinite pagination
   columnNames = ["number", "name", "appearance", "category", "density", "discoveredBy", "namedBy", "symbol", "summary"];
 
   columns;
-  dataSource: Element[] = [];
+  dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -31,16 +33,29 @@ export class PeriodicTableComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.callService(this.pageSize, 0)
+      .subscribe(result => this.dataSource.data = result);
+
     this.paginator.page.pipe(
-      startWith([]),
       switchMap(() => {
         this.loading = true;
-        return this.httpClient.getElements(this.paginator.pageSize, this.paginator.pageIndex)
-      }),
-      map(result => {
-        this.loading = false;
-        return result;
+        return this.callService(this.paginator.pageSize, this.paginator.pageIndex)
       })
-    ).subscribe(result => this.dataSource = result);
+    ).subscribe({
+      next: (result: any) => {
+        this.dataSource.data = result;
+      },
+      error: (err: any) => {
+        console.log(err);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
+
+  public callService(pageSize: number, pageIndex: number) {
+    return this.httpClient.getElements(pageSize, pageIndex);
+  }
+
 }

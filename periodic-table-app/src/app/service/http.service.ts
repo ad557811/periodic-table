@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {PeriodicTableElement} from '../model/element.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +22,9 @@ export class HttpService {
       });
   }
 
-  getElements(pageSize: number, pageIndex: number): Observable<Element[]> {
+  getElements(pageSize: number, pageIndex: number): Observable<PeriodicTableElement[]> {
     let endpoint = `${this.backend_url}/element?max=${pageSize}&page=${pageIndex}`;
-    return this.httpClient.get<Element[]>(endpoint);
+    return this.httpClient.get<PeriodicTableElement[]>(endpoint);
   }
 
 }

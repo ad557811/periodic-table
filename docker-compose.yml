@@ -25,6 +25,8 @@ services:
 
   frontend:
     restart: on-failure:1
+    environment:
+      BACKEND_URL: http://backend:8080
     ports:
      - "4200:4200"
     build:
