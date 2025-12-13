@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {AngularModule} from '../../angular.module';
 import {HttpService} from '../../service/http.service';
 import {MatPaginator} from '@angular/material/paginator';
@@ -21,6 +21,7 @@ export class PeriodicTableComponent implements AfterViewInit {
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('searchFilter') searchField!: ElementRef;
 
   constructor(private readonly httpClient: HttpService) {
     this.columns = this.columnNames.map(columnName => {
@@ -31,10 +32,9 @@ export class PeriodicTableComponent implements AfterViewInit {
     })
   }
 
-  applyFilter($event: KeyboardEvent) {
-    const filterValue = ($event.target as HTMLInputElement).value;
+  applyFilter() {
     this.paginator.firstPage();
-    this.callService(filterValue)
+    this.callService()
       .subscribe(result => this.dataSource.data = result);
   }
 
@@ -49,8 +49,8 @@ export class PeriodicTableComponent implements AfterViewInit {
     ).subscribe(result => this.dataSource.data = result);
   }
 
-  public callService(queryString = '') {
-    return this.httpClient.getElements(queryString, this.paginator.pageSize, this.paginator.pageIndex);
+  public callService() {
+    return this.httpClient.getElements(this.searchField.nativeElement.value, this.paginator.pageSize, this.paginator.pageIndex);
   }
 
 }
