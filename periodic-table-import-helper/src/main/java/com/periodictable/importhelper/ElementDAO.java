@@ -15,28 +15,30 @@ public class ElementDAO {
 
   private static final Logger log = LoggerFactory.getLogger(ElementDAO.class);
 
-  private final String postgresConnectionString = "jdbc:postgresql://localhost:5432/periodic-table";
-  private final String postgresUser = "periodic-table";
+  private final String postgresConnectionString;
+  private final String postgresUser;
   private final String postgresPassword;
 
-  private final String insertQuery = "INSERT INTO ELEMENT(NUMBER,NAME,APPEARANCE,CATEGORY,DENSITY,DISCOVERED_BY,NAMED_BY,SYMBOL,SUMMARY) " +
+  private static final String INSERT_QUERY = "INSERT INTO ELEMENT" +
+      "(NUMBER,NAME,APPEARANCE,CATEGORY,DENSITY,DISCOVERED_BY,NAMED_BY,SYMBOL,SUMMARY) " +
       "VALUES(?,?,?,?,?,?,?,?,?)";
-  private final String clearTableQuery = "TRUNCATE ELEMENT RESTART IDENTITY";
+  private static final String CLEAR_TABLE_QUERY = "TRUNCATE ELEMENT RESTART IDENTITY";
 
   public ElementDAO() {
+    postgresConnectionString = "jdbc:postgresql://localhost:5432/periodic-table";
+    postgresUser = "periodic-table";
     postgresPassword = System.getenv("PT_PASSWORD");
   }
 
-  public void runMigration(List<Element> valuesToInsert) throws SQLException, ClassNotFoundException {
-    Class.forName("org.postgresql.Driver");
+  public void runMigration(List<Element> valuesToInsert) throws SQLException {
     try (Connection connection = DriverManager.getConnection(postgresConnectionString, postgresUser, postgresPassword)) {
       connection.setAutoCommit(false);
-      try (PreparedStatement clearTable = connection.prepareStatement(clearTableQuery)) {
+      try (PreparedStatement clearTable = connection.prepareStatement(CLEAR_TABLE_QUERY)) {
         clearTable.executeUpdate();
       }
 
       for (Element element : valuesToInsert) {
-        try (PreparedStatement update = connection.prepareStatement(insertQuery)) {
+        try (PreparedStatement update = connection.prepareStatement(INSERT_QUERY)) {
           log.info("Inserting {}", element);
           update.setInt(1, element.number());
           update.setString(2, element.name());

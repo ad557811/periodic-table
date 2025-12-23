@@ -1,14 +1,16 @@
 package com.periodictable.importhelper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
-import java.util.Map;
 
 @ShellComponent
 public class ImportCommand {
 
+  private static final Logger log = LoggerFactory.getLogger(ImportCommand.class);
   private final ElementDAO dao;
   private final CSVReader reader;
 
@@ -24,7 +26,7 @@ public class ImportCommand {
       dao.runMigration(parsedData);
       return "All done!";
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Error in executing import:", e);
       return "Errors in executing import";
     }
   }

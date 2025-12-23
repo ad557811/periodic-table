@@ -1,14 +1,14 @@
 spring:
   application:
     name: periodic-table-microservice
+  jpa:
+    hibernate:
+      ddl-auto: none
   r2dbc:
     url: r2dbc:postgresql://${POSTGRES_HOST:localhost}:5432/periodic-table
     username: periodic-table
     password: ${PT_PASSWORD}
-  flyway:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/periodic-table
-    user: periodic-table
-    password: ${PT_PASSWORD}
-    locations: classpath:/database
+flyway:
+  locations: classpath:/database
 cors:
   frontend-address: ${FRONTEND_ADDRESS:http://localhost:4200}
