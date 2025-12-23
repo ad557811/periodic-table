@@ -10,3 +10,5 @@ spring:
     user: periodic-table
     password: ${PT_PASSWORD}
     locations: classpath:/database
+cors:
+  frontend-address: ${FRONTEND_ADDRESS:http://localhost:4200}
