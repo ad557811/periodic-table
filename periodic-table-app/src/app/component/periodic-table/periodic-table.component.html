@@ -1,12 +1,10 @@
-<search>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter()" #searchFilter>
-  </mat-form-field>
-</search>
+<mat-form-field class="search-filter">
+  <mat-label>Filter by description, summary, category...</mat-label>
+  <input matInput (keyup)="applyFilter()" #searchFilter>
+</mat-form-field>
 
 <section>
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource" class="withStickyHeader">
     @for (column of columns; track column) {
       <ng-container [matColumnDef]="column.columnDef">
         <th mat-header-cell *matHeaderCellDef>
@@ -19,7 +17,10 @@
     }
     <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
     <tr mat-row *matRowDef="let row; columns: columnNames;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="999">No data available</td>
+    </tr>
   </table>
-
-  <mat-paginator [pageSize]="pageSize" [length]="maxElements"></mat-paginator>
 </section>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100, 120]" [pageSize]="pageSize" [length]="maxElements"></mat-paginator>

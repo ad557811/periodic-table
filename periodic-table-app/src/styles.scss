@@ -1,12 +1,13 @@
 @use '@angular/material' as mat;
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+}
 
 html {
   @include mat.theme((
     color: (
-      primary: mat.$rose-palette,
-      tertiary: mat.$red-palette,
+      primary: mat.$red-palette,
     ),
     typography: Roboto,
     density: 0,
@@ -30,4 +31,16 @@ footer {
 a {
   text-decoration: none;
   color: var(--mat-sys-primary);
+}
+
+table {
+  table-layout: fixed; //?
+}
+
+table.withStickyHeader {
+  th {
+    position: sticky;
+    top: 0; /* Makes the header stick to the top */
+    z-index: 2; /* Keeps the header above the table body */
+  }
 }

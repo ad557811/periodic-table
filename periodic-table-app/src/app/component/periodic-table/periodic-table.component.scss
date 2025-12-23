@@ -1,3 +1,24 @@
+@use '@angular/material' as mat;
+
+:host {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.search-filter {
+  justify-self: end;
+  margin-right: 20px;
+}
+
+section {
+  overflow: auto;
+}
+
+.mat-no-data-cell {
+  vertical-align: top;
+}
+
 .mat-column-summary {
   max-width: 500px;
   white-space: nowrap;
