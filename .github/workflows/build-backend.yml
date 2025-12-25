@@ -20,4 +20,5 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-         mvn -B clean test
+          cd periodic-table-microservice
+          mvn -B clean test
