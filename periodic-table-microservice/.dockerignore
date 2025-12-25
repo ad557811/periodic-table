@@ -1,7 +1,5 @@
 .idea
 *.iml
-mvnw
-mvnw.cmd
 src/test/**
 target/**
 Dockerfile

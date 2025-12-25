@@ -3,5 +3,6 @@ COPY . .
 RUN --mount=type=cache,target=/root/.m2 mvn clean package
 
 FROM gcr.io/distroless/java21-debian12:nonroot
-COPY --from=build target/periodic-table-microservice-0.0.1-SNAPSHOT.jar .
-CMD ["periodic-table-microservice-0.0.1-SNAPSHOT.jar"]
+ARG VERSION=0.0.1-SNAPSHOT
+COPY --from=build target/periodic-table-microservice-${VERSION}.jar .
+CMD ["periodic-table-microservice-${VERSION}.jar"]
