@@ -1,0 +1,8 @@
+spring:
+  r2dbc:
+    url: r2dbc:tc:postgresql:16:///periodic-table
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

@@ -1,5 +1,6 @@
 package com.periodictable.flyway;
 
+import org.apache.commons.lang3.Strings;
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.r2dbc.autoconfigure.R2dbcProperties;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Workaround for Flyway not supporting R2DBC.
+ *
  * @author Baeldung
  * @see <a href="https://www.baeldung.com/spring-r2dbc-flyway">Spring R2DBC Migrations Using Flyway</a>
  */
@@ -18,10 +20,9 @@ public class FlywayConfiguration {
     if (r2dbcProperties.getUrl() == null) {
       throw new IllegalArgumentException("Cannot set up migration without a DB URL");
     }
-
     return Flyway.configure()
         .dataSource(
-            r2dbcProperties.getUrl().replace("r2dbc:", "jdbc:"),
+            Strings.CI.replace(r2dbcProperties.getUrl(), "r2dbc:", "jdbc:"),
             r2dbcProperties.getUsername(),
             r2dbcProperties.getPassword()
         )
