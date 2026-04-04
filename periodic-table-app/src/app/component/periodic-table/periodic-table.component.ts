@@ -49,8 +49,8 @@ export class PeriodicTableComponent implements AfterViewInit {
     ).subscribe(result => this.dataSource.data = result);
   }
 
-  public callService() {
-    return this.httpClient.getElements(this.searchField.nativeElement.value, this.paginator.pageSize, this.paginator.pageIndex);
+  callService() {
+    return this.httpClient.getElements(this.paginator.pageSize, this.paginator.pageIndex, this.searchField.nativeElement.value);
   }
 
 }

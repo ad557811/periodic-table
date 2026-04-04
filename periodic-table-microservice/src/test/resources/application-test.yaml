@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:tc:postgresql:16:///periodic-table
+    url: r2dbc:tc:postgresql:18:///periodic-table
 springdoc:
   api-docs:
     enabled: false

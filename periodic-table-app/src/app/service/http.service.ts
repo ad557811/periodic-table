@@ -22,7 +22,7 @@ export class HttpService {
       });
   }
 
-  getElements(queryString: string, pageSize: number, pageIndex: number): Observable<PeriodicTableElement[]> {
+  getElements(pageSize: number, pageIndex: number, queryString?: string): Observable<PeriodicTableElement[]> {
     let endpoint = `${this.backend_url}/element?max=${pageSize}&page=${pageIndex}`;
     if (queryString && queryString.length > 0) {
       endpoint += `&query=${queryString}`
