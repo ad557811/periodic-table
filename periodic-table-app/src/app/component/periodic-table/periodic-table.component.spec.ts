@@ -32,9 +32,18 @@ describe('PeriodicTable', () => {
       vi.resetAllMocks()
     })
 
-    it('should call backend', () => {
+    it('should call backend with default values', () => {
       component.callService();
-      expect(mockHttpService.getElements).toHaveBeenCalledOnce();
+      expect(mockHttpService.getElements).toHaveBeenCalledExactlyOnceWith(10, 0, '');
+    });
+  })
+
+  describe('applyFilter', () => {
+    it('should reset paginator and call service', () => {
+      let spyOnPaginator = vi.spyOn(component.paginator, 'firstPage');
+      component.applyFilter();
+
+      expect(spyOnPaginator).toHaveBeenCalledOnce();
     });
   })
 });
