@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:tc:postgresql:18:///periodic-table
+    url: r2dbc:tc:postgresql:18:///periodic-table?TC_IMAGE_TAG=18
 springdoc:
   api-docs:
     enabled: false

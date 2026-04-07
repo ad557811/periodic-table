@@ -21,4 +21,4 @@ jobs:
         shell: bash
         run: |
           cd periodic-table-microservice
-          mvn -B clean test
+          mvn -B clean verify
