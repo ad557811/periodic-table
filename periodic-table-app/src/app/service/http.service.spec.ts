@@ -1,14 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 
 import {HttpService} from './http.service';
-import {Mocked} from 'vitest';
 import {HttpClient} from '@angular/common/http';
 
 describe('HttpClient', () => {
   let service: HttpService;
 
-  let mockHttpClient: Mocked<HttpClient> = {
-    // @ts-ignore
+  let mockHttpClient = {
     get: vi.fn()
   };
 
