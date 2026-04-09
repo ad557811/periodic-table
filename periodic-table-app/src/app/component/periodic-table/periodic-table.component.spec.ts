@@ -39,11 +39,17 @@ describe('PeriodicTable', () => {
   })
 
   describe('applyFilter', () => {
+    beforeEach(() => {
+      vi.resetAllMocks()
+    })
+
     it('should reset paginator and call service', () => {
       let spyOnPaginator = vi.spyOn(component.paginator, 'firstPage');
+      let spyOnService = vi.spyOn(mockHttpService, 'getElements');
       component.applyFilter();
 
       expect(spyOnPaginator).toHaveBeenCalledOnce();
+      expect(spyOnService).toHaveBeenCalledOnce();
     });
   })
 });
