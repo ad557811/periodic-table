@@ -1,12 +1,11 @@
 package com.periodictable.service;
 
+import com.periodictable.test.utils.AbstractDatabaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
-class PeriodicTableElementServiceIntegrationTest {
+class PeriodicTableElementServiceIntegrationTest extends AbstractDatabaseTest {
 
   @Autowired
   PeriodicTableElementService service;
